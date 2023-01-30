@@ -110,10 +110,10 @@ export default function Home() {
           section {
             flex: 1;
             overflow-y: auto;
-            height: calc(100vh - 50px + ${height + 40}px);
           }
 
           footer {
+            margin-bottom: 100px;
             min-height: 80px;
             display: flex;
             height: ${height + 40}px;
