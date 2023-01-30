@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import SendIcon from "../components/atoms/Icons/SendIcon";
 import Message from "@cm/Message";
@@ -7,11 +7,15 @@ import { colors } from "styles/theme";
 
 import AppLayout from "@co/AppLayout";
 import TextArea from "@ca/TextArea";
+import Loading from "@ca/Icons/Loading";
 
 export default function Home() {
   const [height, setHeight] = useState(40);
   const [chatHistory, setChatHistory] = useState([]);
   const [text, setText] = useState("");
+  const containerRef = useRef(null);
+  const [scrollDown, setScrollDown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const processMessageBot = (message) => {
     const msg = message.toLowerCase();
@@ -31,19 +35,43 @@ export default function Home() {
         ...prev,
         { name: "Chatbot", message: "No te preocupes, todo estará bien" },
       ]);
+    } else if (msg.includes("adios".toLowerCase())) {
+      setChatHistory((prev) => [
+        ...prev,
+        { name: "Chatbot", message: "Hasta luego" },
+      ]);
+    } else if (msg.includes("gracias".toLowerCase())) {
+      setChatHistory((prev) => [
+        ...prev,
+        { name: "Chatbot", message: "De nada" },
+      ]);
     } else {
       setChatHistory((prev) => [
         ...prev,
-        { name: "Chatbot", message: "No entiendo" },
+        { name: "Chatbot", message: "No te entiendo, aún estoy aprendiendo" },
       ]);
     }
   };
 
+  useEffect(() => {
+    if (scrollDown) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+      setScrollDown(false);
+    }
+  }, [scrollDown]);
+
   const SendMessage = () => {
-    setChatHistory([...chatHistory, { name: "Usuario", message: text }]);
-    setTimeout(() => {
-      processMessageBot(text);
-    }, 1000);
+    if (!loading && text.trim() !== "") {
+      setLoading(true);
+      setChatHistory([...chatHistory, { name: "Usuario", message: text }]);
+      setScrollDown(true);
+      setText("");
+      setTimeout(() => {
+        processMessageBot(text);
+        setScrollDown(true);
+        setLoading(false);
+      }, 10000);
+    }
   };
 
   const onClickButton = () => {
@@ -63,7 +91,7 @@ export default function Home() {
         <header>
           <h2>Chat</h2>
         </header>
-        <section>
+        <section ref={containerRef}>
           {chatHistory.map((chat, index) => (
             <Message
               key={index}
@@ -77,12 +105,17 @@ export default function Home() {
           ))}
         </section>
         <footer id="footer">
-          <SendIcon
-            height={30}
-            width={30}
-            color={colors.primary}
-            onClick={onClickButton}
-          />
+          {loading ? (
+            <Loading></Loading>
+          ) : (
+            <SendIcon
+              className="icon"
+              height={30}
+              width={30}
+              color={colors.primary}
+              onClick={onClickButton}
+            />
+          )}
           <TextArea
             value={text}
             onChange={(target, text) => {
@@ -92,7 +125,6 @@ export default function Home() {
             }}
             sendMsg={() => {
               SendMessage();
-              setText("");
             }}
           />
         </footer>
@@ -140,6 +172,17 @@ export default function Home() {
           footer > :global(svg) {
             position: absolute;
             bottom: 24px;
+            right: 30px;
+            z-index: 1;
+          }
+
+          footer > :global(svg):hover {
+            cursor: pointer;
+          }
+
+          footer > :global(div) {
+            position: absolute;
+            bottom: 35px;
             right: 30px;
             z-index: 1;
           }

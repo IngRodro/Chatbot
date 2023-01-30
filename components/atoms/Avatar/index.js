@@ -6,7 +6,6 @@ function Avatar({ alt, src }) {
         img {
           height: 49px;
           width: 49px;
-          border-radius: 9999px;
         }
         div {
           display: flex;
