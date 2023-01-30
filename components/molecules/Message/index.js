@@ -1,11 +1,16 @@
-export default function Message({ name, message, background }) {
+import Avatar from "../../atoms/Avatar";
+
+export default function Message({ name, message, background, avatar }) {
   return (
     <>
       <article>
-        <section>
+        <div>
+          <Avatar src={avatar} alt={name} />
+        </div>
+        <div>
           <strong>{name}</strong>
           <p>{message}</p>
-        </section>
+        </div>
       </article>
       <style jsx>
         {`

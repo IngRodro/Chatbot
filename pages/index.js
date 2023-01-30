@@ -5,7 +5,7 @@ import Message from "@cm/Message";
 
 import { colors } from "styles/theme";
 
-import AppLayout from "@ca/AppLayout";
+import AppLayout from "@co/AppLayout";
 import TextArea from "@ca/TextArea";
 
 export default function Home() {
@@ -69,6 +69,7 @@ export default function Home() {
               key={index}
               name={chat.name}
               message={chat.message}
+              avatar={chat.name === "Chatbot" ? "chatbot.png" : "user.png"}
               background={
                 chat.name === "Chatbot" ? colors.secondary : colors.primary
               }
