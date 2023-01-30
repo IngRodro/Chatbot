@@ -31,7 +31,6 @@ export const globalStyles = css.global`
 export default css`
   div {
     display: grid;
-    height: 100vh;
     place-items: center;
   }
 
