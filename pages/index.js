@@ -29,7 +29,7 @@ export default function Home() {
     } else if (msg.includes("mal".toLowerCase())) {
       setChatHistory((prev) => [
         ...prev,
-        { name: "Chatbot", message: "Lo siento" },
+        { name: "Chatbot", message: "No te preocupes, todo estará bien" },
       ]);
     } else {
       setChatHistory((prev) => [
@@ -110,6 +110,7 @@ export default function Home() {
           section {
             flex: 1;
             overflow-y: auto;
+            height: calc(100vh - 50px + ${height + 40}px);
           }
 
           footer {
