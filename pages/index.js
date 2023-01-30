@@ -11,6 +11,7 @@ import TextArea from "@ca/TextArea";
 export default function Home() {
   const [height, setHeight] = useState(40);
   const [chatHistory, setChatHistory] = useState([]);
+  const [text, setText] = useState("");
 
   const processMessageBot = (message) => {
     const msg = message.toLowerCase();
@@ -38,6 +39,17 @@ export default function Home() {
     }
   };
 
+  const SendMessage = () => {
+    setChatHistory([...chatHistory, { name: "Usuario", message: text }]);
+    setTimeout(() => {
+      processMessageBot(text);
+    }, 1000);
+  };
+
+  const onClickButton = () => {
+    SendMessage();
+    setText("");
+  };
   return (
     <>
       <Head>
@@ -56,21 +68,22 @@ export default function Home() {
           ))}
         </section>
         <footer>
-          <SendIcon height={30} width={30} color={colors.primary} />
+          <SendIcon
+            height={30}
+            width={30}
+            color={colors.primary}
+            onClick={onClickButton}
+          />
           <TextArea
-            value={""}
-            onChange={(target) => {
+            value={text}
+            onChange={(target, text) => {
               const height = parseInt(target.style.height);
               setHeight(height);
+              setText(text);
             }}
             sendMsg={(text) => {
-              setChatHistory([
-                ...chatHistory,
-                { name: "Usuario", message: text },
-              ]);
-              setTimeout(() => {
-                processMessageBot(text);
-              }, 1000);
+              SendMessage();
+              setText("");
             }}
           />
         </footer>

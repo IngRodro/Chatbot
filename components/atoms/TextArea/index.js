@@ -1,25 +1,22 @@
 import Textarea from "react-textarea-autosize";
 import { useState } from "react";
 
-function TextArea({ onChange, sendMsg }) {
-  const [text, setText] = useState("");
-
+function TextArea({ onChange, sendMsg, value }) {
   const handleChange = (event) => {
-    setText(event.target.value);
-    onChange(event.target);
+    onChange(event.target, event.target.value);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      sendMsg(text);
+      sendMsg(event.target.value);
     }
   };
 
   return (
     <Textarea
-      value={text}
+      value={value}
       onChange={handleChange}
       minRows={1}
       maxRows={6}
