@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import SendIcon from "../components/atoms/Icons/SendIcon";
 import Message from "@cm/Message";
@@ -50,6 +50,7 @@ export default function Home() {
     SendMessage();
     setText("");
   };
+
   return (
     <>
       <Head>
@@ -64,10 +65,17 @@ export default function Home() {
         </header>
         <section>
           {chatHistory.map((chat, index) => (
-            <Message key={index} name={chat.name} message={chat.message} />
+            <Message
+              key={index}
+              name={chat.name}
+              message={chat.message}
+              background={
+                chat.name === "Chatbot" ? colors.secondary : colors.primary
+              }
+            />
           ))}
         </section>
-        <footer>
+        <footer id="footer">
           <SendIcon
             height={30}
             width={30}
@@ -77,11 +85,11 @@ export default function Home() {
           <TextArea
             value={text}
             onChange={(target, text) => {
+              setText(text);
               const height = parseInt(target.style.height);
               setHeight(height);
-              setText(text);
             }}
-            sendMsg={(text) => {
+            sendMsg={() => {
               SendMessage();
               setText("");
             }}
@@ -99,7 +107,7 @@ export default function Home() {
             align-items: center;
             background: #ffffffaa;
             backdrop-filter: blur(5px);
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #aeaeae;
             height: 50px;
             display: flex;
             position: sticky;
@@ -117,13 +125,13 @@ export default function Home() {
             display: flex;
             height: ${height + 40}px;
             background: #fff;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #aeaeae;
             position: sticky;
             align-items: center;
             bottom: 0;
             padding: 20px;
             width: 100%;
-            max-height: 230px;
+            max-height: 150px;
 
             transition: height 0.3s ease;
           }
@@ -131,21 +139,64 @@ export default function Home() {
           footer > :global(svg) {
             position: absolute;
             bottom: 24px;
-            right: 40px;
+            right: 30px;
             z-index: 1;
-
-            transition: transform 0.3s ease;
           }
 
           footer > :global(textarea) {
             position: relative;
-            min-height: 35px;
+            min-height: 32px;
             resize: none;
+            background: #fcfcfc;
+            border: 1px solid #eee;
             font-size: 18px;
             width: 100%;
             overflow: auto;
+            box-sizing: border-box;
+            box-shadow: 2px 2px 2px #bbb;
             max-height: 200px;
-            padding-right: 40px;
+            padding-right: 30px;
+
+            transition: transform 0.3s ease;
+          }
+
+          section::-webkit-scrollbar,
+          footer > :global(textarea)::-webkit-scrollbar {
+            -webkit-appearance: none;
+          }
+
+          section::-webkit-scrollbar:vertical,
+          footer > :global(textarea)::-webkit-scrollbar:vertical {
+            width: 10px;
+          }
+
+          section::-webkit-scrollbar-button:decrement,
+          section::-webkit-scrollbar-button,
+          footer > :global(textarea)::-webkit-scrollbar-button:increment,
+          footer > :global(textarea)::-webkit-scrollbar-button {
+            display: none;
+          }
+
+          section::-webkit-scrollbar:horizontal,
+          footer > :global(textarea)::-webkit-scrollbar:horizontal {
+            height: 10px;
+          }
+
+          section::-webkit-scrollbar-thumb,
+          footer > :global(textarea)::-webkit-scrollbar-thumb {
+            background-color: #797979;
+            border-radius: 20px;
+            border: 2px solid #f1f2f3;
+          }
+
+          section::-webkit-scrollbar-track,
+          footer > :global(textarea)::-webkit-scrollbar-track {
+            border-radius: 10px;
+          }
+
+          footer > :global(textarea):focus {
+            outline: none;
+            border: 1px solid ${colors.black};
           }
         `}
       </style>

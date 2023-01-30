@@ -1,4 +1,4 @@
-export default function Message({ name, message }) {
+export default function Message({ name, message, background }) {
   return (
     <>
       <article>
@@ -16,7 +16,7 @@ export default function Message({ name, message }) {
           article {
             display: flex;
             padding: 10px 15px;
-            border-bottom: 2px solid #eaf7ff;
+            background: ${background};
           }
 
           p {

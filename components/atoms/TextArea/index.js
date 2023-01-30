@@ -1,5 +1,4 @@
 import Textarea from "react-textarea-autosize";
-import { useState } from "react";
 
 function TextArea({ onChange, sendMsg, value }) {
   const handleChange = (event) => {
@@ -19,7 +18,7 @@ function TextArea({ onChange, sendMsg, value }) {
       value={value}
       onChange={handleChange}
       minRows={1}
-      maxRows={6}
+      maxRows={3}
       onKeyDown={handleKeyDown}
     />
   );
