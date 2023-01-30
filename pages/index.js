@@ -113,7 +113,6 @@ export default function Home() {
           }
 
           footer {
-            margin-bottom: 100px;
             min-height: 80px;
             display: flex;
             height: ${height + 40}px;
@@ -132,7 +131,7 @@ export default function Home() {
           footer > :global(svg) {
             position: absolute;
             bottom: 24px;
-            right: 22px;
+            right: 40px;
             z-index: 1;
 
             transition: transform 0.3s ease;
