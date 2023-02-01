@@ -150,6 +150,7 @@ export default function Home() {
           section {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
           }
 
           footer {
