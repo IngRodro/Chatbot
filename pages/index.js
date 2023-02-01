@@ -42,7 +42,7 @@ export default function Home() {
             name: "Chatbot",
             message:
               response.answers[
-                Math.floor(Math.random() * response.answer.length)
+                Math.floor(Math.random() * response.answers.length)
               ],
           },
         ])
