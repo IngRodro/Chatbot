@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "keywords": ["Hola"],
+    "answers": ["Hola", "Hola, ¿cómo estás?", "Hola, ¿qué tal?", "Hola, ¿cómo te va?"]
+  },
+  {
+    "id": "2",
+    "keywords": ["Adios", "Hasta luego", "Hasta la proxima"],
+    "answers": ["Adios", "Hasta luego", "Hasta la proxima"]
+  },
+  {
+    "id": "3",
+    "keywords": ["Como estas", "Que tal", "Como te va"],
+    "answers": ["Bien", "Muy bien", "Mal", "Muy mal"]
+  },
+  {
+    "id": "4",
+    "keywords": ["Que haces", "Que estas haciendo"],
+    "answers": [
+      "Estoy hablando contigo"
+    ]
+  },
+  {
+    "id": "5",
+    "keywords": ["Que eres", "Quien eres?"],
+    "answers": ["Soy un bot"]
+  },
+  {
+    "id": "6",
+    "keywords": ["Que es un bot"],
+    "answers": ["Un bot es un programa que responde a preguntas"]
+  },
+  {
+    "id": "7",
+    "keywords": ["Bien", "Muy bien", "Excelente", "Genial"],
+    "answers": ["Me alegro"]
+  },
+  {
+    "id": "8",
+    "keywords": ["Mal", "Muy mal", "Horrible", "Pesimo"],
+    "answers": ["No te preocupes, todo mejorará"]
+  }
+]

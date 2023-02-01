@@ -9,6 +9,8 @@ import AppLayout from "@co/AppLayout";
 import TextArea from "@ca/TextArea";
 import Loading from "@ca/Icons/Loading";
 
+import database from "../database/ia-database.json";
+
 export default function Home() {
   const [height, setHeight] = useState(40);
   const [chatHistory, setChatHistory] = useState([]);
@@ -20,37 +22,34 @@ export default function Home() {
   const processMessageBot = (message) => {
     const msg = message.toLowerCase();
 
-    if (msg.includes("hola".toLowerCase())) {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "Hola, ¿cómo estás?" },
-      ]);
-    } else if (msg.includes("bien".toLowerCase())) {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "Me alegro" },
-      ]);
-    } else if (msg.includes("mal".toLowerCase())) {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "No te preocupes, todo estará bien" },
-      ]);
-    } else if (msg.includes("adios".toLowerCase())) {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "Hasta luego" },
-      ]);
-    } else if (msg.includes("gracias".toLowerCase())) {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "De nada" },
-      ]);
-    } else {
-      setChatHistory((prev) => [
-        ...prev,
-        { name: "Chatbot", message: "No te entiendo, aún estoy aprendiendo" },
-      ]);
+    if (msg.includes("/clear")) {
+      setChatHistory([]);
+      return;
     }
+
+    const response = database.find((item) => {
+      const { keywords } = item;
+      const contains = keywords.find((keyword) =>
+        msg.includes(keyword.toLowerCase())
+      );
+      return contains;
+    });
+
+    response
+      ? setChatHistory((prev) => [
+          ...prev,
+          {
+            name: "Chatbot",
+            message:
+              response.answers[
+                Math.floor(Math.random() * response.answer.length)
+              ],
+          },
+        ])
+      : setChatHistory((prev) => [
+          ...prev,
+          { name: "Chatbot", message: "No entiendo lo que dices" },
+        ]);
   };
 
   useEffect(() => {
@@ -70,7 +69,7 @@ export default function Home() {
         processMessageBot(text);
         setScrollDown(true);
         setLoading(false);
-      }, 10000);
+      }, 1000);
     }
   };
 
