@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import SendIcon from "../components/atoms/Icons/SendIcon";
 import Message from "@cm/Message";
+import axios from "axios";
 
 import { colors } from "styles/theme";
 
@@ -18,6 +19,7 @@ export default function Home() {
   const containerRef = useRef(null);
   const [scrollDown, setScrollDown] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [learning, setLearning] = useState(null);
 
   const processMessageBot = (message) => {
     const msg = message.toLowerCase();
@@ -35,21 +37,24 @@ export default function Home() {
       return contains;
     });
 
-    response
-      ? setChatHistory((prev) => [
-          ...prev,
-          {
-            name: "Chatbot",
-            message:
-              response.answers[
-                Math.floor(Math.random() * response.answers.length)
-              ],
-          },
-        ])
-      : setChatHistory((prev) => [
-          ...prev,
-          { name: "Chatbot", message: "No entiendo lo que dices" },
-        ]);
+    if (response) {
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          name: "Chatbot",
+          message:
+            response.answers[
+            Math.floor(Math.random() * response.answers.length)
+            ],
+        },
+      ])
+    } else {
+      setChatHistory((prev) => [
+        ...prev,
+        { name: "Chatbot", message: "No entiendo lo que dices, me puedes decir lo que puedo responder a ello" },
+      ]);
+      !learning && setLearning(msg);
+    }
   };
 
   useEffect(() => {
@@ -59,8 +64,27 @@ export default function Home() {
     }
   }, [scrollDown]);
 
-  const SendMessage = () => {
-    if (!loading && text.trim() !== "") {
+
+  const SendMessage = async () => {
+    if (learning) {
+      setChatHistory([...chatHistory, { name: "Usuario", message: text }]);
+      const newJSON = [...database, { id: database.length + 1, keywords: [learning], answers: [text] }]
+      setLoading(true)
+      setText('')
+      setTimeout(() => {
+        setChatHistory((prev) => [
+          ...prev,
+          { name: "Chatbot", message: "Gracias por tu aporte" },
+        ]);
+        setScrollDown(true);
+        setLoading(false);
+        setLearning(null)
+      }, 1000);
+      await axios.post('http://localhost:3000/api/learn', {
+        newJSON: JSON.stringify(newJSON)
+      })
+    }
+    if (!loading && text.trim() !== "" && !learning) {
       setLoading(true);
       setChatHistory([...chatHistory, { name: "Usuario", message: text }]);
       setScrollDown(true);
